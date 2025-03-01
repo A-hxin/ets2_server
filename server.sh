@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # 服务器目录
 SERVER_HOME="/home/steam/ets2_sv/bin/linux_x64"
 
@@ -33,25 +32,35 @@ case "$1" in
         ;;
     
     stop)
-        if [ -f "$PID_FILE" ]; then
+	if [ -f "$PID_FILE" ]; then
             PID=$(cat "$PID_FILE")
             echo "🛑 正在停止 ETS2 服务器 (PID: $PID)..."
 
-            # 先杀掉 `eurotrucks2_server`
-            kill $PID && rm -f "$PID_FILE"
+            # 先尝试正常终止服务器
+            kill $PID
+            sleep 2
 
-            # 也尝试杀掉 `awk`（如果仍然存在）
-            AWK_PID=$(pgrep -P $PID awk)
+            # 如果进程仍然存活，则强制终止
+            if ps -p $PID > /dev/null 2>&1; then
+                echo "⚠ 进程 $PID 仍然存活，尝试强制终止..."
+                kill -9 $PID
+            fi
+
+            # 也尝试杀掉 `awk` 日志进程（如果仍然存在）
+            AWK_PID=$(pgrep -f ets2_server_log)
             if [ -n "$AWK_PID" ]; then
-                echo "🛑 发现 `awk` 进程 (PID: $AWK_PID)，正在清理..."
+                echo "🛑 发现 awk 进程 (PID: $AWK_PID)，正在清理..."
                 kill $AWK_PID
             fi
 
+            # 清理 PID 文件
+            rm -f "$PID_FILE"
             echo "✅ ETS2 服务器已完全停止。"
-        else
+    	else
             echo "⚠ ETS2 服务器未运行。"
-        fi
+    	fi
         ;;
+
 
     restart)
         echo "🔄 正在重启 ETS2 服务器..."
