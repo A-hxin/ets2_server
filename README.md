@@ -10,7 +10,19 @@
 sudo ln -s /home/steam/ets2_sv/bin/linux_x64/server.sh /usr/local/bin/ets2_sv
 ```
 
-使用方法：
+## 权限问题
+修复 logs/ 目录和 server.pid 文件权限
+```
+sudo chown -R steam:steam /home/steam/ets2_sv/bin/linux_x64/
+sudo chmod -R 775 /home/steam/ets2_sv/bin/linux_x64/
+sudo chown -R steam:steam /home/steam/ets2_sv/bin/linux_x64/logs
+sudo chmod -R 775 /home/steam/ets2_sv/bin/linux_x64/logs
+sudo chown -R steam:steam /home/steam/ets2_doc/Euro\ Truck\ Simulator\ 2/
+sudo chmod -R 775 /home/steam/ets2_doc/Euro\ Truck\ Simulator\ 2/
+```
+
+
+## 使用方法：
 ```
 [steam@bc-ets linux_x64]$ ets2_sv 
 🚀 ETS2 服务器管理命令
