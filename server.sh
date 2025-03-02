@@ -1,6 +1,9 @@
 #!/bin/sh
-# 2025-03-02-08:10:45
+# 2025-03-02-08:28:27
 # 项目地址：https://github.com/A-hxin/ets2_server/
+
+
+#!/bin/sh
 
 # 服务器目录（使用绝对路径，防止软链接问题）
 SERVER_HOME="/home/steam/ets2_sv/bin/linux_x64"
@@ -109,4 +112,3 @@ case "$1" in
         exit 1
         ;;
 esac
-
